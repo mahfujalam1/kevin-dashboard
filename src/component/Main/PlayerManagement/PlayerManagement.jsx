@@ -126,6 +126,7 @@ const columns = [
   },
 ];
 
+
 export default function PlayerManagement() {
   const [query, setQuery] = useState("");
 

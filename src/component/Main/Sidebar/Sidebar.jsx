@@ -40,7 +40,7 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     toast.success("User Logged Out!");
-    navigate("/auth/sign-in");
+    navigate("/auth");
   };
 
   return (

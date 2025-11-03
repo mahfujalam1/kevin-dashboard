@@ -14,14 +14,12 @@ import EditPrivacyPolicy from "../page/EditPrivacyPolicy/EditPrivacyPolicy";
 import TermsConditions from "../page/TermsConditions/TermsConditions";
 import EditTermsConditions from "../page/EditTermsConditions/EditTermsConditions";
 import UsersPage from "../page/Users/UsersPage";
-import ChatLayout from "../page/chat/chat/ChatLayout";
-import ManageOrderTable from "../page/manageOrder/ManageOrderTable";
-import ProductsPage from "../page/OldCrisis/ProductPage";
-import Templates from "../page/templates/Templates";
-import NewsTable from "../page/News/NewTable";
 import SessionManage from "../component/Main/SessionManage/SessionManage";
 import CoachManagement from "../component/Main/CoachManagement/CoachManagement";
 import PlayerManagement from "../component/Main/PlayerManagement/PlayerManagement";
+import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
+import ReportTable from "../component/Main/Report/Report";
+import ProfilePage from "../component/Main/Profile/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -52,24 +50,20 @@ const router = createBrowserRouter([
         element: <PlayerManagement />,
       }, 
       {
-        path: "orders",
-        element: <ManageOrderTable />,
+        path: "cancel-request",
+        element: <CancelRequest />,
       }, 
       {
-        path: "oldcrisis",
-        element: <ProductsPage />,
-      }, 
-      {
-        path: "templates",
-        element: <Templates />,
-      }, 
-      {
-        path: "news",
-        element: <NewsTable />,
+        path: "report",
+        element: <ReportTable />,
       }, 
       {
         path: "settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "settings/profile",
+        element: <ProfilePage />,
       },
       {
         path: "settings/privacy-policy",

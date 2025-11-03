@@ -1,4 +1,4 @@
-import { IoChevronBack } from "react-icons/io5";
+
 import { TbEdit } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import CustomButton from "../../utils/CustomButton";
@@ -8,12 +8,10 @@ const TermsConditions = () => {
     <section className="w-full h-full min-h-screen">
       <div className="flex justify-between items-center py-5">
         <div className="flex  items-center">
-          <Link to="/settings">
-            <IoChevronBack className="text-2xl" />
-          </Link>
-          <h1 className="text-2xl font-semibold">Privacy Policy</h1>
+          
+          <h1 className="text-2xl font-semibold">Terms & Condition</h1>
         </div>
-        <Link to={"/settings/edit-privacy-policy/11"}>
+        <Link to={"/settings/edit-terms-conditions/11"}>
           <CustomButton border>
             <TbEdit className="size-5" />
             <span>Edit</span>

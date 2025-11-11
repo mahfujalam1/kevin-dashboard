@@ -17,9 +17,9 @@ import UsersPage from "../page/Users/UsersPage";
 import SessionManage from "../component/Main/SessionManage/SessionManage";
 import CoachManagement from "../component/Main/CoachManagement/CoachManagement";
 import PlayerManagement from "../component/Main/PlayerManagement/PlayerManagement";
-import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
 import ReportTable from "../component/Main/Report/Report";
 import ProfilePage from "../component/Main/Profile/ProfilePage";
+import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <PlayerManagement />,
       }, 
       {
-        path: "cancel-request",
+        path: "refund-request",
         element: <CancelRequest />,
       }, 
       {

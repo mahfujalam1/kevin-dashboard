@@ -22,7 +22,7 @@ const navItems = [
   { label: "Session Manage", to: "/session-manage", icon: LayoutList },
   { label: "Coach Management", to: "/coach-management", icon: Users },
   { label: "Player Management", to: "/player-management", icon: RiTeamLine },
-  { label: "Cancel Request", to: "/cancel-request", icon: TbBrandD3 },
+  { label: "Refund Request", to: "/refund-request", icon: TbBrandD3 },
   { label: "Report", to: "/report", icon: MessageSquareMore },
 ];
 

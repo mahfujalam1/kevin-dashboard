@@ -8,6 +8,7 @@ import {
   SearchOutlined,
   DollarCircleOutlined,
 } from "@ant-design/icons";
+import { FcCancel } from "react-icons/fc";
 
 const rows = [
   {
@@ -133,6 +134,11 @@ const columns = [
           key: "refund",
           icon: <DollarCircleOutlined />,
           label: "Refund",
+        },
+        {
+          key: "reject",
+          icon: <FcCancel />,
+          label: "Reject",
         },
       ];
       const onClick = ({ key }) => {

@@ -14,7 +14,7 @@ const MainLayout = () => {
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       {/* Main Content */}
       <section className="w-full h-full md:ml-[200px] lg:ml-[250px] xl:ml-[280px] py-10 px-4">
-        <div className=" px-4">
+        <div className="px-4">
         <Outlet />
         </div>
       </section>

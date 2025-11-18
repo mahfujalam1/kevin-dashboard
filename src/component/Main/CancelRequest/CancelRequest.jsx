@@ -176,7 +176,7 @@ export default function CancelRequest() {
 
   return (
     <Card
-      title="Cancel Request"
+      title="Refund Request"
       extra={
         <Input
           value={query}

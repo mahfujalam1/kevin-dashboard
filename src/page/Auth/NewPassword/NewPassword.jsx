@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useResetPasswordMutation } from "../../../redux/features/auth/authApi";
+import { toast } from "sonner";
 
 const NewPassword = () => {
-  const { email } = useParams();
   const navigate = useNavigate();
+  const [resetPassword] = useResetPasswordMutation();
 
   const [passwords, setPasswords] = useState({
-    current: "",
     new: "",
     confirm: "",
   });
 
   const [visible, setVisible] = useState({
-    current: false,
     new: false,
     confirm: false,
   });
@@ -22,28 +22,37 @@ const NewPassword = () => {
 
   const handleChange = (e) => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
-    setError(""); // clear error when typing
+    setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const forgotToken = localStorage.getItem("reset-password");
 
     if (passwords.new !== passwords.confirm) {
       setError("New password and confirm password do not match!");
       return;
     }
 
-    console.log("Password updated for:", email, passwords);
-    navigate("/auth/sign-in");
+    const res = await resetPassword({
+      token: forgotToken,
+      newPassword: passwords.new,
+      confirmPassword: passwords.confirm,
+    });
+    if (res?.data) {
+      toast.success(res?.data?.message);
+      if (res?.data?.success) {
+        localStorage.removeItem("reset-password");
+        navigate("/auth");
+      }
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white rounded-xl shadow-md w-full max-w-lg p-10 text-center">
         {/* Logo */}
-        <div className="flex flex-col items-center mb-6">
-          
-        </div>
+        <div className="flex flex-col items-center mb-6"></div>
 
         {/* Title */}
         <h2 className="text-lg font-semibold text-gray-800 mb-6">
@@ -52,7 +61,7 @@ const NewPassword = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
-          {["current", "new", "confirm"].map((type) => (
+          {["new", "confirm"].map((type) => (
             <div key={type}>
               <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
                 {type === "confirm"

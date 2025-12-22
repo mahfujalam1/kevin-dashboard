@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../../redux/features/auth/authApi";
+import { toast } from "sonner";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sign in data:", formData, "Remember:", remember);
-    navigation('/')
+    try {
+      const res = await login(formData);
+      if (res?.data) {
+        toast.success(res?.data?.message);
+        localStorage.setItem("token", res?.data?.data?.token);
+        navigation("/");
+      } else if (res?.error) {
+        toast.error(res?.error?.data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -38,7 +51,7 @@ const SignIn = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="mostain@gmail.com"
+              placeholder="example@gmail.com"
               required
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-black"
             />

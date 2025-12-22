@@ -1,11 +1,18 @@
+import { useGetDashboardStatusQuery } from "../../../redux/features/dashboard/dashboardApi";
+
 // src/components/Status.jsx
 export default function Status() {
+
+  const {data} = useGetDashboardStatusQuery()
+  const statsData = data?.data
+  console.log(data)
+
   const stats = [
-    { label: "Total Player", value: 1582 },
-    { label: "Total Coach", value: 280 },
-    { label: "Total Earning", value: 2580, currency: "USD" },
-    { label: "Total Session", value: 256 },
-    { label: "Total Refund", value: 256 },
+    { label: "Total Player", value: statsData?.totalPlayers },
+    { label: "Total Coach", value: statsData?.totalCaoches },
+    { label: "Total Earning", value: statsData?.totalEarnings, currency: "USD" },
+    { label: "Total Session", value: statsData?.totalSessions },
+    { label: "Total Refund", value: statsData?.totalRefunds },
   ];
 
   const format = (s) =>

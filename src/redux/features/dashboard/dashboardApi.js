@@ -1,22 +1,22 @@
 import { baseApi } from "../../baseApi/baseApi";
+import { tagTypes } from "../../tagTypes";
 
 const dashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDashboardStatus: builder.query({
       query: () => ({
-        url: "/admin/getTotalStatus",
+        url: "/dashboard/overview",
         method: "GET",
       }),
-      transformResponse: (response) => response?.data?.attributes,
+      providesTags: [tagTypes.dashboard],
     }),
-    getIncomeRatio: builder.query({
+    getEarningGrowth: builder.query({
       query: (year) => ({
-        url: `/admin/getIncomeRatio?year=${year}`,
+        url: `/payments/growth?year=${year}`,
         method: "GET",
       }),
-      transformResponse: (response) => response?.data?.attributes,
     }),
   }),
 });
 
-export const { useGetDashboardStatusQuery, useGetIncomeRatioQuery } = dashboardApi;
+export const { useGetDashboardStatusQuery, useGetEarningGrowthQuery,  } = dashboardApi;

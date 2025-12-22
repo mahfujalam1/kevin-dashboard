@@ -1,25 +1,23 @@
 import { baseApi } from "../../baseApi/baseApi";
+import { tagTypes } from "../../tagTypes";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllUsers: builder.query({
-      query: (args) => {
-        console.log(args);
-        const params = new URLSearchParams();
+    usersGrowth: builder.query({
+      query: (year) => ({
+        url: `/users/growth?year=${year}`,
+        method: "GET",
+      }),
+    }),
 
-        if (args) {
-          args.forEach((item) => {
-            params.append(item.name, item.value);
-          });
-        }
-        return {
-          url: "/admin/all-users",
-          method: "GET",
-          params,
-        };
-      },
+    getAllUsers: builder.query({
+      query: ({ role, limit }) => ({
+        url: `/users?limit=${limit}&role=${role}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.users],
     }),
   }),
 });
 
-export const { useGetAllUsersQuery } = userApi;
+export const { useUsersGrowthQuery, useGetAllUsersQuery } = userApi;

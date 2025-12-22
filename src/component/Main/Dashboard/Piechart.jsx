@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useGetEarningGrowthQuery } from "../../../redux/features/dashboard/dashboardApi";
 
 Chart.register(
   LineController,
@@ -58,19 +59,25 @@ export default function EarningGrowthChart() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
   const [year, setYear] = useState(2025);
+  const { data } = useGetEarningGrowthQuery();
+  const earningGrowth = data?.data || [];
 
-  // demo data — API ডেটা দিলে এখানে বসান
-  const dataByYear = useMemo(
-    () => ({
-      2024: [35, 45, 60, 22, 75, 50, 38, 46, 18, 24, 16, 58],
-      2025: [85, 72, 62, 28, 80, 66, 30, 48, 12, 19, 11, 80],
-    }),
-    []
-  );
+  // Process API data into months and totals
+  const chartData = useMemo(() => {
+    if (!earningGrowth) return new Array(12).fill(0); // Default empty data if no data found
+    return MONTHS?.map((_, index) => {
+      const monthData = earningGrowth.find((item) => item.month === index + 1);
+      return monthData ? monthData.total : 0; // Default to 0 if no data for the month
+    });
+  }, [earningGrowth]);
 
   useEffect(() => {
-    const ctx = canvasRef.current.getContext("2d");
-    chartRef.current?.destroy();
+    const ctx = canvasRef.current?.getContext("2d");
+
+    // Destroy previous chart instance on re-render
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
 
     chartRef.current = new Chart(ctx, {
       type: "line",
@@ -79,7 +86,7 @@ export default function EarningGrowthChart() {
         datasets: [
           {
             label: `${year}`,
-            data: dataByYear[year] || [],
+            data: chartData,
             // --- only line, no area fill ---
             fill: false,
             tension: 0, // <-- straight segments (no rounded curve)
@@ -124,14 +131,12 @@ export default function EarningGrowthChart() {
     });
 
     return () => chartRef.current?.destroy();
-  }, [year, dataByYear]);
+  }, [year, chartData]);
 
   return (
     <div className="rounded-2xl border bg-gray-50 p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-base font-semibold text-gray-800">
-          Player Growth
-        </h3>
+        <h3 className="text-base font-semibold text-gray-800">Player Growth</h3>
         <select
           className="rounded-lg border px-3 py-1.5 text-sm"
           value={year}

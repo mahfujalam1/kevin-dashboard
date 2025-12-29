@@ -156,13 +156,7 @@ export default function UserGrowthChart() {
 
       {/* Chart area */}
       <div className="h-64 md:h-72">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>Error loading data</p>
-        ) : (
-          <canvas ref={canvasRef} />
-        )}
+        <canvas ref={canvasRef} />
       </div>
 
       <div className="mt-2 text-center text-sm text-gray-500">◌ {year}</div>

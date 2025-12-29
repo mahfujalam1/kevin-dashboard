@@ -1,15 +1,18 @@
-
 import { TbEdit } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import CustomButton from "../../utils/CustomButton";
+import { useGetTermsQuery } from "../../redux/features/Terms&policy/terms-policy";
 
 const TermsConditions = () => {
+  const { data } = useGetTermsQuery();
+  const terms = data;
+  console.log(data)
+
   return (
     <section className="w-full h-full min-h-screen">
       <div className="flex justify-between items-center py-5">
-        <div className="flex  items-center">
-          
-          <h1 className="text-2xl font-semibold">Terms & Condition</h1>
+        <div className="flex items-center">
+          <h1 className="text-2xl font-semibold">Terms & Conditions</h1>
         </div>
         <Link to={"/settings/edit-terms-conditions/11"}>
           <CustomButton border>
@@ -19,22 +22,12 @@ const TermsConditions = () => {
         </Link>
       </div>
 
-      <div>
-        <p className="text-lg text-black px-5">
-          {/* {privacy.content} */}
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Reprehenderit ex ad voluptate dolores, debitis qui vitae nobis! Sit
-          hic eligendi qui cumque mollitia illum fuga fugit dolores odio,
-          commodi placeat omnis? Ratione pariatur dolor consequatur eligendi
-          aliquid at recusandae maiores adipisci, laboriosam corrupti excepturi
-          ad dolorum? Minima corrupti deserunt ipsum, illum eum et numquam nihil
-          alias exercitationem! Minus voluptate, commodi quod laborum expedita
-          hic officiis doloremque voluptatum nesciunt minima id ratione neque,
-          impedit unde possimus, veniam architecto harum nostrum quibusdam
-          voluptas eius magnam itaque animi quo. Fugiat id explicabo repellendus
-          saepe excepturi nam cumque necessitatibus enim aperiam impedit? Aut,
-          dolorem!
-        </p>
+      <div className="px-5 text-lg text-black">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: terms?.data?.content || "<p>No Terms and Conditions available.</p>",
+          }}
+        />
       </div>
     </section>
   );

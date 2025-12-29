@@ -1,5 +1,5 @@
 import IncomeGraphChart from "../../component/Main/Dashboard/IncomeGraphChart";
-import NewOrdersTable from "../../component/Main/Dashboard/NewOrderTable";
+import NewSessionTable from "../../component/Main/Dashboard/NewSessionTable";
 import Piechart from "../../component/Main/Dashboard/Piechart";
 import Status from "../../component/Main/Dashboard/Status";
 const DashboardHome = () => {
@@ -19,7 +19,7 @@ const DashboardHome = () => {
               <Piechart />
             </div>
           </div>
-        <NewOrdersTable />
+        <NewSessionTable />
       </div>
     </section>
   );

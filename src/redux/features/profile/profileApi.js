@@ -1,4 +1,5 @@
 import { baseApi } from "../../baseApi/baseApi";
+import { tagTypes } from "../../tagTypes";
 
 const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,7 +8,7 @@ const profileApi = baseApi.injectEndpoints({
         url:`/admin/user/${id}`,
         method: "GET",
       }),
-      providesTags: ["User"],
+      providesTags: [tagTypes.users],
       transformResponse: (response) => response?.data?.attributes,
     }),
 
@@ -17,7 +18,7 @@ const profileApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: [tagTypes.users],
       transformResponse: (response) => response.data,
     }),
     changePassword: builder.mutation({

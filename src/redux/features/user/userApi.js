@@ -17,7 +17,24 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.users],
     }),
+
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/users/change-password",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+
+
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: "/users",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useUsersGrowthQuery, useGetAllUsersQuery } = userApi;
+export const { useUsersGrowthQuery, useGetAllUsersQuery, useChangePasswordMutation, useUpdateUserMutation } = userApi;

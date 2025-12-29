@@ -1,6 +1,3 @@
-// ReportTable.jsx — Ant Design version with separated ReplyModal component
-// import 'antd/dist/reset.css';
-
 import { useState } from "react";
 import { Card, Table, Tag, Button, Input } from "antd";
 import {
@@ -8,67 +5,51 @@ import {
   DeleteOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import ConfirmModal from "../../ui/Modal/ConfirmModal";
 import { ReplyModal } from "../../ui/Modal/ReplyModal";
-
-const initialData = [
-  {
-    key: 1,
-    name: "Jullu Jalal",
-    description: "Our Bachelor of Commerce program is ACBSP–accredited.",
-    time: "8:38 AM",
-    status: "Pending",
-    feedback:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure",
-  },
-  {
-    key: 2,
-    name: "Jullu Jalal",
-    description: "Our Bachelor of Commerce program is ACBSP–accredited.",
-    time: "8:38 AM",
-    status: "Replied",
-    feedback:
-      "There are many variations of passages of Lorem Ipsum available...",
-  },
-];
+import { useGetAllReportsQuery } from "../../../redux/features/dashboard/dashboardApi";
 
 export default function ReportTable() {
   const [query, setQuery] = useState("");
-  const [data, setData] = useState(initialData);
+  const { data: reports, refetch } = useGetAllReportsQuery();
   const [replyModal, setReplyModal] = useState({ open: false, record: null });
-  const [confirmModal, setConfirmModal] = useState({
-    open: false,
-    record: null,
-  });
 
-  const handleSend = (text) => {
-    if (!replyModal.record) return;
-    setData((prev) =>
-      prev.map((r) =>
-        r.key === replyModal.record.key ? { ...r, status: "Replied" } : r
-      )
-    );
+  const handleSend = () => {
+    refetch();
     setReplyModal({ open: false, record: null });
   };
 
-  const handleDelete = (record) => {
-    setConfirmModal({ open: true, record });
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
-  const confirmDelete = () => {
-    setData((prev) => prev.filter((r) => r.key !== confirmModal.record.key));
-    setConfirmModal({ open: false, record: null });
-  };
-
-  const filtered = data.filter((r) => {
+  const filtered = reports?.data?.reports?.filter((r) => {
     const q = query.trim().toLowerCase();
     if (!q) return true;
     return (
-      r.name.toLowerCase().includes(q) ||
+      r.participant?.player?.fullName?.toLowerCase().includes(q) ||
       r.description.toLowerCase().includes(q) ||
+      r.createdAt.toLowerCase().includes(q) ||
       r.status.toLowerCase().includes(q)
     );
   });
+
+  const tableData = filtered?.map((report) => ({
+    key: report.id,
+    id: report.id,
+    name: report.participant?.player?.fullName || "N/A",
+    description: report.description,
+    time: formatDate(report.createdAt),
+    status: report.status,
+    reply: report.reply,
+  }));
 
   const columns = [
     {
@@ -102,57 +83,29 @@ export default function ReportTable() {
         </Tag>
       ),
     },
-    {
-      title: "",
-      key: "delete",
-      align: "center",
-      render: (_, record) => (
-        <Button
-          icon={<DeleteOutlined />}
-          type="text"
-          danger
-          onClick={() => handleDelete(record)}
-        />
-      ),
-    },
   ];
 
   return (
-    <Card
-      title="Report"
-      extra={
+    <Card title="Report">
+      <div style={{ marginBottom: 16 }}>
         <Input
+          placeholder="Search by name, description, time or status"
+          prefix={<SearchOutlined />}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          allowClear
-          size="large"
-          placeholder="Search"
-          prefix={<SearchOutlined />}
-          style={{ width: 320, background: "#f5f5f5", borderRadius: 999 }}
+          style={{ maxWidth: 400 }}
         />
-      }
-      bodyStyle={{ padding: 0 }}
-    >
-      <Table columns={columns} dataSource={filtered} pagination={false} />
+      </div>
+
+      <Table columns={columns} dataSource={tableData} pagination={false} />
 
       {/* Reply Modal */}
       <ReplyModal
-        open={replyModal.open}
+        open={replyModal.record?.status === "Pending" ? replyModal.open : false}
         record={replyModal.record}
         onClose={() => setReplyModal({ open: false, record: null })}
         onSend={handleSend}
       />
-
-      {/* Delete Confirmation */}
-      <ConfirmModal
-        open={confirmModal.open}
-        onClose={() => setConfirmModal({ open: false, record: null })}
-        onConfirm={confirmDelete}
-        title="Are you sure?"
-        message="You want to delete this report."
-      />
     </Card>
   );
 }
-
-

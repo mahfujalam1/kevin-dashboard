@@ -2,17 +2,19 @@ import { useGetDashboardStatusQuery } from "../../../redux/features/dashboard/da
 
 // src/components/Status.jsx
 export default function Status() {
-
-  const {data} = useGetDashboardStatusQuery()
-  const statsData = data?.data
-  console.log(data)
+  const { data } = useGetDashboardStatusQuery();
+  const statsData = data?.data;
 
   const stats = [
-    { label: "Total Player", value: statsData?.totalPlayers },
-    { label: "Total Coach", value: statsData?.totalCaoches },
-    { label: "Total Earning", value: statsData?.totalEarnings, currency: "USD" },
-    { label: "Total Session", value: statsData?.totalSessions },
-    { label: "Total Refund", value: statsData?.totalRefunds },
+    { label: "Total Player", value: statsData?.totalPlayers || 0 },
+    { label: "Total Coach", value: statsData?.totalCaoches || 0 },
+    {
+      label: "Total Earning",
+      value: statsData?.totalEarnings || 0,
+      currency: "USD",
+    },
+    { label: "Total Session", value: statsData?.totalSessions || 0 },
+    { label: "Total Refund", value: statsData?.totalRefunds || 0 },
   ];
 
   const format = (s) =>
@@ -31,7 +33,9 @@ export default function Status() {
           key={s.label}
           className="rounded-2xl border bg-gray-100 p-6 text-center shadow-sm py-10"
         >
-          <div className="text-3xl text-gray-600 font-semibold tabular-nums">{format(s)}</div>
+          <div className="text-3xl text-gray-600 font-semibold tabular-nums">
+            {format(s)}
+          </div>
           <div className="mt-2 text-lg text-gray-600">{s.label}</div>
         </div>
       ))}

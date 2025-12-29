@@ -158,7 +158,7 @@ export default function CoachManagement() {
           <div>
             <div style={{ fontWeight: 600 }}>{r.coach.name}</div>
             <div style={{ fontSize: 12, color: "#8c8c8c" }}>
-              {r.coach.sport}
+              {r.coach.role}
             </div>
           </div>
         </Space>

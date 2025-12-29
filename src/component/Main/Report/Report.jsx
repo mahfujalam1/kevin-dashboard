@@ -18,7 +18,6 @@ export default function ReportTable() {
     setReplyModal({ open: false, record: null });
   };
 
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
@@ -86,17 +85,20 @@ export default function ReportTable() {
   ];
 
   return (
-    <Card title="Report">
-      <div style={{ marginBottom: 16 }}>
+    <Card
+      title="Report"
+      extra={
         <Input
-          placeholder="Search by name, description, time or status"
-          prefix={<SearchOutlined />}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          style={{ maxWidth: 400 }}
+          allowClear
+          size="large"
+          placeholder="Search"
+          prefix={<SearchOutlined />}
+          style={{ width: 320, background: "#f5f5f5", borderRadius: 999 }}
         />
-      </div>
-
+      }
+    >
       <Table columns={columns} dataSource={tableData} pagination={false} />
 
       {/* Reply Modal */}

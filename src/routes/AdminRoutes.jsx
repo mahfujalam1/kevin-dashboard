@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 // AdminRoutes.js
+
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const AdminRoutes = ({ children }) => {
   const token = localStorage.getItem('token')
+  console.log(token);
   if (!token) {
     return <Navigate to="/auth" replace />;
   }

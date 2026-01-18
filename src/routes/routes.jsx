@@ -20,12 +20,15 @@ import PlayerManagement from "../component/Main/PlayerManagement/PlayerManagemen
 import ReportTable from "../component/Main/Report/Report";
 import ProfilePage from "../component/Main/Profile/ProfilePage";
 import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
+import AdminRoutes from "./AdminRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <MainLayout />
+      <AdminRoutes>
+        <MainLayout />
+      </AdminRoutes>
     ),
     errorElement: <h1>Error</h1>,
     children: [
@@ -36,27 +39,27 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <UsersPage />,
-      }, 
+      },
       {
         path: "session-manage",
         element: <SessionManage />,
-      }, 
+      },
       {
         path: "coach-management",
         element: <CoachManagement />,
-      }, 
+      },
       {
         path: "player-management",
         element: <PlayerManagement />,
-      }, 
+      },
       {
         path: "refund-request",
         element: <CancelRequest />,
-      }, 
+      },
       {
         path: "report",
         element: <ReportTable />,
-      }, 
+      },
       {
         path: "settings",
         element: <SettingsPage />,
@@ -84,9 +87,10 @@ const router = createBrowserRouter([
       {
         path: "settings/about-us",
         element: <AboutUsPage />,
-      },{
+      },
+      {
         path: "/settings/edit-about-us/:id",
-        element: <EditAboutUs/>
+        element: <EditAboutUs />,
       },
     ],
   },

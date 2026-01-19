@@ -5,7 +5,7 @@ const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     usersGrowth: builder.query({
       query: (year) => ({
-        url: `/users/growth?year=${year}`,
+        url: `/users/user-growth?year=${year}`,
         method: "GET",
       }),
     }),
@@ -25,7 +25,6 @@ const userApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-
 
     updateUser: builder.mutation({
       query: (data) => ({

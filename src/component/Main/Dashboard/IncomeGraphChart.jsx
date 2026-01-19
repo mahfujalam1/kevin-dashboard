@@ -20,7 +20,7 @@ Chart.register(
   CategoryScale,
   Filler,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const MONTHS = [
@@ -41,18 +41,31 @@ const MONTHS = [
 export default function UserGrowthChart() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
-  const [year, setYear] = useState(2025);
+
+  // Get current year dynamically
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState(currentYear);
 
   // Fetch dynamic data from the API based on the selected year
   const { data, isLoading, error } = useUsersGrowthQuery(year);
-  const userData = data?.data || []; // Access the correct data structure
+  const userData = data?.data || [];
+
+  // Generate years from 2024 to current year
+  const availableYears = useMemo(() => {
+    const startYear = 2024;
+    const years = [];
+    for (let y = startYear; y <= currentYear; y++) {
+      years.push(y);
+    }
+    return years;
+  }, [currentYear]);
 
   // Process API data into months and totals
   const chartData = useMemo(() => {
-    if (!userData) return new Array(12).fill(0); // Default empty data if no data found
+    if (!userData) return new Array(12).fill(0);
     return MONTHS?.map((_, index) => {
       const monthData = userData.find((item) => item.month === index + 1);
-      return monthData ? monthData.total : 0; // Default to 0 if no data for the month
+      return monthData ? monthData.total : 0;
     });
   }, [userData]);
 
@@ -72,8 +85,8 @@ export default function UserGrowthChart() {
         datasets: [
           {
             label: `${year}`,
-            data: chartData, // Use dynamic chartData here
-            borderColor: "#111827", // slate-900
+            data: chartData,
+            borderColor: "#111827",
             borderWidth: 2,
             tension: 0.35,
             pointRadius: 3.5,
@@ -82,7 +95,6 @@ export default function UserGrowthChart() {
             pointBorderColor: "#111827",
             pointBorderWidth: 1.5,
             fill: "start",
-            // Responsive gradient based on chart area
             backgroundColor: (context) => {
               const { chart } = context;
               const { ctx, chartArea } = chart;
@@ -91,7 +103,7 @@ export default function UserGrowthChart() {
                 0,
                 chartArea.top,
                 0,
-                chartArea.bottom
+                chartArea.bottom,
               );
               gradient.addColorStop(0, "rgba(17,24,39,0.25)");
               gradient.addColorStop(1, "rgba(17,24,39,0.02)");
@@ -119,7 +131,7 @@ export default function UserGrowthChart() {
               color: "rgba(0,0,0,0.06)",
               drawBorder: false,
             },
-            ticks: { color: "#6b7280" }, // gray-500
+            ticks: { color: "#6b7280" },
           },
           y: {
             beginAtZero: true,
@@ -133,11 +145,10 @@ export default function UserGrowthChart() {
       },
     });
 
-    // Cleanup on component unmount or year change
     return () => {
       chartRef.current && chartRef.current.destroy();
     };
-  }, [year, chartData]); // Re-run effect when `year` or `chartData` changes
+  }, [year, chartData]);
 
   return (
     <div className="rounded-2xl border bg-gray-50 p-4 shadow-sm">
@@ -149,8 +160,11 @@ export default function UserGrowthChart() {
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
         >
-          <option value={2025}>2025</option>
-          <option value={2024}>2024</option>
+          {availableYears.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
         </select>
       </div>
 

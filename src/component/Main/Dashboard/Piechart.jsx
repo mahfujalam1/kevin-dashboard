@@ -1,4 +1,3 @@
-// src/components/EarningGrowthChart.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Chart,
@@ -10,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useGetEarningGrowthQuery } from "../../../redux/features/dashboard/dashboardApi";
+import { useGetPlayerGrowthQuery } from "../../../redux/features/dashboard/dashboardApi";
 
 Chart.register(
   LineController,
@@ -19,7 +18,7 @@ Chart.register(
   LinearScale,
   CategoryScale,
   Tooltip,
-  Legend
+  Legend,
 );
 
 // --- plugin: chart area background gradient ---
@@ -58,23 +57,37 @@ const MONTHS = [
 export default function EarningGrowthChart() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
-  const [year, setYear] = useState(2025);
-  const { data } = useGetEarningGrowthQuery();
+
+  // Get current year dynamically
+  const currentYear = new Date().getFullYear();
+  const [year, setYear] = useState(currentYear);
+
+  // API call with selected year
+  const { data } = useGetPlayerGrowthQuery(year);
   const earningGrowth = data?.data || [];
 
-  // Process API data into months and totals
+  // Generate years from 2024 to current year
+  const availableYears = useMemo(() => {
+    const startYear = 2024;
+    const years = [];
+    for (let y = startYear; y <= currentYear; y++) {
+      years.push(y);
+    }
+    return years;
+  }, [currentYear]);
+
+  // Process data into months and totals
   const chartData = useMemo(() => {
-    if (!earningGrowth) return new Array(12).fill(0); // Default empty data if no data found
+    if (!earningGrowth) return new Array(12).fill(0);
     return MONTHS?.map((_, index) => {
       const monthData = earningGrowth.find((item) => item.month === index + 1);
-      return monthData ? monthData.total : 0; // Default to 0 if no data for the month
+      return monthData ? monthData.total : 0;
     });
   }, [earningGrowth]);
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
 
-    // Destroy previous chart instance on re-render
     if (chartRef.current) {
       chartRef.current.destroy();
     }
@@ -87,9 +100,8 @@ export default function EarningGrowthChart() {
           {
             label: `${year}`,
             data: chartData,
-            // --- only line, no area fill ---
             fill: false,
-            tension: 0, // <-- straight segments (no rounded curve)
+            tension: 0,
             borderColor: "#111827",
             borderWidth: 2,
             pointRadius: 3,
@@ -110,10 +122,9 @@ export default function EarningGrowthChart() {
             intersect: false,
             callbacks: { label: (ctx) => ` ${ctx.parsed.y}` },
           },
-          // plugin options (bg gradient)
           chartAreaGradient: {
-            from: "rgba(17,24,39,0.08)", // top color
-            to: "rgba(17,24,39,0.00)", // bottom color
+            from: "rgba(17,24,39,0.08)",
+            to: "rgba(17,24,39,0.00)",
           },
         },
         scales: {
@@ -142,8 +153,11 @@ export default function EarningGrowthChart() {
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
         >
-          <option value={2025}>2025</option>
-          <option value={2024}>2024</option>
+          {availableYears.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
         </select>
       </div>
 

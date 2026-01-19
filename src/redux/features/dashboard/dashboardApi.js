@@ -10,9 +10,9 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.dashboard],
     }),
-    getEarningGrowth: builder.query({
+    getPlayerGrowth: builder.query({
       query: (year) => ({
-        url: `/payments/growth?year=${year}`,
+        url: `/users/growth?year=${year}`,
         method: "GET",
       }),
     }),
@@ -73,7 +73,7 @@ const dashboardApi = baseApi.injectEndpoints({
 
 export const {
   useGetDashboardStatusQuery,
-  useGetEarningGrowthQuery,
+  useGetPlayerGrowthQuery,
   useAddPlatformFeeMutation,
   useGetPlatformFeeQuery,
   useGetAllReportsQuery,

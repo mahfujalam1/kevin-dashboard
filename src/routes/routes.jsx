@@ -21,6 +21,7 @@ import ReportTable from "../component/Main/Report/Report";
 import ProfilePage from "../component/Main/Profile/ProfilePage";
 import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
 import AdminRoutes from "./AdminRoutes";
+import ErrorElement from "../component/errorElement/ErrorElement";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
         <MainLayout />
       </AdminRoutes>
     ),
-    errorElement: <h1>Error</h1>,
+    errorElement: <ErrorElement/>,
     children: [
       {
         index: true,
@@ -96,7 +97,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
-    errorElement: <h1>Auth Error</h1>,
+    errorElement: <ErrorElement/>,
     children: [
       {
         index: true,

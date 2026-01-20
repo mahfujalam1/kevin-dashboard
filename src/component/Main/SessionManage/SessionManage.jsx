@@ -55,6 +55,7 @@ export default function SessionManage() {
     limit,
     search: query,
   });
+  console.log(data);
 
   const [cancelSession, { isLoading: isCancelling }] =
     useCancelSessionMutation();
@@ -116,7 +117,7 @@ export default function SessionManage() {
       setActionModal({ open: false, record: null, type: null });
     } catch (error) {
       message.error(
-        error?.data?.message || `Failed to ${actionModal.type} session`
+        error?.data?.message || `Failed to ${actionModal.type} session`,
       );
     }
   };

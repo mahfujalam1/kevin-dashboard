@@ -47,6 +47,7 @@ export default function CoachManagement() {
     limit,
     role: "COACH",
   });
+  console.log("====================",data)
   const [warnUser, { isLoading: isWarning }] = useWarnUserMutation();
   const [blockUser, { isLoading: isBlocking }] = useBlockUserMutation();
 
@@ -70,9 +71,9 @@ export default function CoachManagement() {
           ? `${import.meta.env.VITE_BASE_IMAGE_URL}/${coach?.avatar}`
           : undefined,
       },
-      totalSession: coach?.total_sessions ?? 0,
+      totalSession: coach?.total_created_sessions ?? 0,
       email: coach?.email ?? "—",
-      cancelSession: coach?.cancelled_sessions ?? 0,
+      cancelSession: coach?.total_cancelled_sessions ?? 0,
       subscription: coach?.subscription_end_date
         ? formatDateTime(coach.subscription_end_date)
         : "No subscription",
@@ -128,9 +129,6 @@ export default function CoachManagement() {
     >
       <p style={{ margin: 0, marginBottom: 4 }}>
         <strong>Coach:</strong> {record.coach.name}
-      </p>
-      <p style={{ margin: 0, marginBottom: 4 }}>
-        <strong>Sport:</strong> {record.coach.sport}
       </p>
       <p style={{ margin: 0 }}>
         <strong>Email:</strong> {record.email}

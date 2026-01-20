@@ -35,7 +35,6 @@ const formatDateTime = (iso) => {
 };
 
 export default function CancelRequest() {
-  const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [rejectModal, setRejectModal] = useState({ open: false, record: null });
@@ -44,7 +43,6 @@ export default function CancelRequest() {
   const { data, isLoading } = useGetAllRefundsQuery({
     page,
     limit,
-    search: query,
   });
 
   const [acceptRefund, { isLoading: isAccepting }] = useAcceptRefundMutation();
@@ -264,17 +262,7 @@ export default function CancelRequest() {
     <>
       <Card
         title="Refund Request"
-        extra={
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            allowClear
-            size="large"
-            placeholder="Search"
-            prefix={<SearchOutlined />}
-            style={{ width: 320, background: "#f5f5f5", borderRadius: 999 }}
-          />
-        }
+        
         styles={{ body: { padding: 0 } }}
       >
         <Table

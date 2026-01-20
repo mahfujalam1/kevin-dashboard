@@ -7,7 +7,7 @@ const refundApi = baseApi.injectEndpoints({
       query: ({ search, page, limit }) => ({
         url: "/refunds",
         method: "GET",
-        params: { query: search, page, limit },
+        params: { page, limit },
       }),
       providesTags: [tagTypes.refunds],
     }),

@@ -181,16 +181,7 @@ export default function CancelRequest() {
       ellipsis: true,
       responsive: ["md", "lg", "xl", "xxl"],
     },
-    {
-      title: "Refund Amount",
-      dataIndex: "refund",
-      key: "refund",
-      align: "center",
-      render: (v) => (
-        <span style={{ color: "#ef4444", fontWeight: 600 }}>${v || 0}</span>
-      ),
-      responsive: ["sm", "md", "lg", "xl", "xxl"],
-    },
+    
     {
       title: "Status",
       dataIndex: "status",

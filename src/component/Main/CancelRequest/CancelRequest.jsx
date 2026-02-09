@@ -13,7 +13,6 @@ import {
 } from "antd";
 import {
   DownOutlined,
-  SearchOutlined,
   DollarCircleOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";

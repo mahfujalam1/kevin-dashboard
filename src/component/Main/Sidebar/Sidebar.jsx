@@ -83,7 +83,7 @@ export default function Sidebar() {
       >
         {/* Header */}
         <div className="flex items-center gap-3 px-4 py-6 border-b">
-          <h2 className="text-xl font-bold text-gray-900">Admin Panel</h2>
+          <img src="/logo/logo.png" alt="logo" />
           <button
             onClick={() => setMobileOpen(false)}
             className="ml-auto inline-flex rounded-lg p-2 hover:bg-gray-100 lg:hidden"

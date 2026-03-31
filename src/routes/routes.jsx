@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         <MainLayout />
       </AdminRoutes>
     ),
-    errorElement: <ErrorElement/>,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -96,8 +96,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "privacy-policy",
+    element: <PrivacyPolicyPage />,
+  },
+  {
+    path: "terms-conditions",
+    element: <TermsConditions />,
+  },
+  {
     path: "/auth",
-    errorElement: <ErrorElement/>,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -106,6 +114,14 @@ const router = createBrowserRouter([
       {
         path: "forgot-password",
         element: <ForgetPassword />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicyPage />,
+      },
+      {
+        path: "terms-conditions",
+        element: <TermsConditions />,
       },
       {
         path: "otp/:email",

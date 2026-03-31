@@ -27,7 +27,9 @@ const PrivacyPolicyPage = () => {
       <div>
         <div
           dangerouslySetInnerHTML={{
-            __html: policy?.data?.content || "",
+            __html:
+              policy?.data?.content ||
+              "<p>No Privacy Policy available.</p>",
           }}
         />
       </div>

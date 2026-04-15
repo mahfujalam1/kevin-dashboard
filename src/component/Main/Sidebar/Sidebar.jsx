@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Home,
   LayoutList,
@@ -12,26 +12,27 @@ import {
   X,
   MessageSquareMore,
   DollarSign,
-  Plus,
   Edit2,
-  Trash2,
 } from "lucide-react";
 import { useGetPlatformFeeQuery } from "../../../redux/features/dashboard/dashboardApi";
 import PlatformFeeModal from "../../ui/Modal/PlatformFeeModal";
 import LogOutModal from "../../ui/Modal/LogoutModal";
 
-// Main Sidebar Component
 export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [platformFeeOpen, setPlatformFeeOpen] = useState(false);
-  const [showAddFeeModal, setShowAddFeeModal] = useState(false);
   const [showEditFeeModal, setShowEditFeeModal] = useState(false);
-  const [editingFee, setEditingFee] = useState(null);
   const { data } = useGetPlatformFeeQuery();
   const feeData = data?.data;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if currently inside any settings route
+  const isInSettings = location.pathname.startsWith("/settings");
+
+  // Keep settings dropdown open automatically if on a settings route
+  const [settingsOpen, setSettingsOpen] = useState(isInSettings);
 
   const navItems = [
     { label: "Dashboard", path: "/", icon: Home },
@@ -46,14 +47,11 @@ export default function Sidebar() {
     { label: "Profile", path: "/settings/profile" },
     { label: "Terms & Condition", path: "/settings/terms-conditions" },
     { label: "Privacy Policy", path: "/settings/privacy-policy" },
+    { label: "Help & Support", path: "/settings/help-support" },
   ];
 
-  const openEditModal = () => {
-    setShowEditFeeModal(true);
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     setConfirmOpen(false);
     navigate("/auth");
   };
@@ -97,7 +95,6 @@ export default function Sidebar() {
           <ul className="space-y-2">
             {navItems?.map((item) => {
               const Icon = item.icon;
-
               return (
                 <li key={item.path}>
                   <NavLink
@@ -147,7 +144,7 @@ export default function Sidebar() {
                       </div>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
-                          onClick={() => openEditModal(feeData)}
+                          onClick={() => setShowEditFeeModal(true)}
                           className="rounded p-1 hover:bg-white transition-colors"
                         >
                           <Edit2 className="h-3.5 w-3.5 text-gray-600" />
@@ -163,7 +160,11 @@ export default function Sidebar() {
             <li>
               <button
                 onClick={() => setSettingsOpen((prev) => !prev)}
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-gray-700 hover:bg-gray-100 transition-colors"
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 transition-colors ${
+                  isInSettings
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
               >
                 <Settings className="h-5 w-5" />
                 <span className="font-medium">Settings</span>
@@ -176,25 +177,23 @@ export default function Sidebar() {
 
               {settingsOpen && (
                 <ul className="ml-9 mt-1 space-y-1 border-l-2 border-gray-200 pl-3 text-sm text-gray-700">
-                  {settingsSubRoutes.map((sub) => {
-                    return (
-                      <li key={sub.path}>
-                        <NavLink
-                          to={sub.path}
-                          className={({ isActive }) =>
-                            `block w-full text-left rounded-md px-3 py-2 transition-colors ${
-                              isActive
-                                ? "bg-gray-900 text-white"
-                                : "hover:bg-gray-100"
-                            }`
-                          }
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {sub.label}
-                        </NavLink>
-                      </li>
-                    );
-                  })}
+                  {settingsSubRoutes.map((sub) => (
+                    <li key={sub.path}>
+                      <NavLink
+                        to={sub.path}
+                        className={({ isActive }) =>
+                          `block w-full text-left rounded-md px-3 py-2 transition-colors ${
+                            isActive
+                              ? "bg-gray-900 text-white"
+                              : "hover:bg-gray-100"
+                          }`
+                        }
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {sub.label}
+                      </NavLink>
+                    </li>
+                  ))}
                 </ul>
               )}
             </li>
@@ -217,7 +216,6 @@ export default function Sidebar() {
         onClose={() => setShowEditFeeModal(false)}
       />
 
-      {/* Logout Confirmation Modal */}
       <LogOutModal
         isOpen={confirmOpen}
         onClose={() => setConfirmOpen(false)}

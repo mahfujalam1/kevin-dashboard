@@ -22,6 +22,7 @@ import ProfilePage from "../component/Main/Profile/ProfilePage";
 import CancelRequest from "../component/Main/CancelRequest/CancelRequest";
 import AdminRoutes from "./AdminRoutes";
 import ErrorElement from "../component/errorElement/ErrorElement";
+import HelpSupport from "../page/HelpSupport/HelpSupport";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
         path: "/settings/edit-about-us/:id",
         element: <EditAboutUs />,
       },
+      {
+        path: "/settings/help-support",
+        element: <HelpSupport />,
+      },
     ],
   },
   {
@@ -102,6 +107,10 @@ const router = createBrowserRouter([
   {
     path: "terms-conditions",
     element: <TermsConditions />,
+  },
+  {
+    path: "help-support",
+    element: <HelpSupport />,
   },
   {
     path: "/auth",
